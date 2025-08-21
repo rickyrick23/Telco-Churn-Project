@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChurnGuard Pro - AI-Powered Customer Retention Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>ChurnGuard Pro</h1>
+                    <p>AI-Powered Customer Retention Platform</p>
+                </div>
+                <div class="header-right">
+                    <div class="health-status">
+                        <span id="health" class="badge">Checking...</span>
+                    </div>
+                    <div class="team-credits">
+                        <span class="credit">Made by Arjun Yadav</span>
+                        <span class="credit">Rohit Mukherjee</span>
+                        <span class="credit">Lovneesh Aggarwal</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <!-- Database Overview Section -->
+            <section class="card">
+                <h2>Database Overview</h2>
+                <p class="muted">Current data statistics from your PostgreSQL database.</p>
+                <div class="grid-3">
+                    <div class="stat-card">
+                        <div class="stat-number" id="customer-count">-</div>
+                        <div class="stat-label">Customers</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="interaction-count">-</div>
+                        <div class="stat-label">Interactions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="churn-rate">-</div>
+                        <div class="stat-label">Churn Rate</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <button id="btn-refresh-stats" class="btn secondary">Refresh Stats</button>
+                </div>
+            </section>
+
+            <!-- Customer Data Explorer Section -->
+            <section class="card">
+                <h2>Customer Data Explorer</h2>
+                <p class="muted">Explore your customer dataset with filters and insights.</p>
+                <div class="grid-3">
+                    <div>
+                        <label class="label">Gender</label>
+                        <select id="filter-gender" class="input">
+                            <option value="">All</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label">Contract Type</label>
+                        <select id="filter-contract" class="input">
+                            <option value="">All</option>
+                            <option value="Month-to-month">Month-to-month</option>
+                            <option value="One year">One year</option>
+                            <option value="Two year">Two year</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label">Churn Status</label>
+                        <select id="filter-churn" class="input">
+                            <option value="">All</option>
+                            <option value="true">Churned</option>
+                            <option value="false">Active</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <button id="btn-explore" class="btn primary">Explore Data</button>
+                    <button id="btn-export" class="btn secondary">Export CSV</button>
+                </div>
+                <div id="explore-result" class="table"></div>
+            </section>
+
+            <!-- Vector Search (RAG) Section -->
+            <section class="card">
+                <h2>Vector Search (RAG)</h2>
+                <p class="muted">Search through customer interactions using semantic similarity.</p>
+                <textarea id="search-query" rows="3" class="input" placeholder="Describe what you're looking for in customer interactions...">customer complaints about billing</textarea>
+                <div class="row">
+                    <button id="btn-vector-search" class="btn primary">Search</button>
+                    <input type="number" id="search-limit" class="input small" placeholder="Limit" value="5" min="1" max="20" />
+                </div>
+                <div id="vector-results" class="table"></div>
+            </section>
+
+            <!-- Sentiment Analysis Section -->
+            <section class="card">
+                <h2>Sentiment Analysis</h2>
+                <p class="muted">Analyze the sentiment of customer interactions and feedback.</p>
+                <textarea id="sentiment-text" rows="4" class="input" placeholder="Enter text to analyze sentiment...">I'm very satisfied with the service quality and customer support.</textarea>
+                <div class="row">
+                    <button id="btn-sentiment" class="btn primary">Analyze Sentiment</button>
+                </div>
+                <div id="sentiment-result" class="result"></div>
+            </section>
+
+            <!-- Churn Prediction Section -->
+            <section class="card">
+                <h2>Churn Prediction</h2>
+                <p class="muted">Predict customer churn risk using machine learning models.</p>
+                <div class="grid-3">
+                    <div>
+                        <label class="label">Tenure (months)</label>
+                        <input type="number" id="f-tenure" class="input" placeholder="12" min="0" max="120" />
+                    </div>
+                    <div>
+                        <label class="label">Monthly Charges</label>
+                        <input type="number" id="f-monthly" class="input" placeholder="65.50" min="0" step="0.01" />
+                    </div>
+                    <div>
+                        <label class="label">Contract Type</label>
+                        <select id="f-contract" class="input">
+                            <option value="Month-to-month">Month-to-month</option>
+                            <option value="One year">One year</option>
+                            <option value="Two year">Two year</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid-3">
+                    <div>
+                        <label class="label">Internet Service</label>
+                        <select id="f-internet" class="input">
+                            <option value="DSL">DSL</option>
+                            <option value="Fiber optic">Fiber optic</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label">Payment Method</label>
+                        <select id="f-payment" class="input">
+                            <option value="Electronic check">Electronic check</option>
+                            <option value="Mailed check">Mailed check</option>
+                            <option value="Bank transfer">Bank transfer</option>
+                            <option value="Credit card">Credit card</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label">Paperless Billing</label>
+                        <select id="f-paperless" class="input">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <button id="btn-churn" class="btn primary">Predict Churn Risk</button>
+                </div>
+                <div id="churn-result" class="result"></div>
+            </section>
+
+            <!-- Natural Language Query Section -->
+            <section class="card">
+                <h2>Natural Language Query</h2>
+                <p class="muted">Ask questions about your data in plain English.</p>
+                <textarea id="nlq" rows="3" class="input" placeholder="Ask a question about your customer data...">Show me customers with high churn risk above 80%</textarea>
+                <div class="row">
+                    <button id="btn-nlq" class="btn primary">Generate & Execute</button>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <h3>Generated SQL</h3>
+                        <div id="sql-result" class="result"></div>
+                    </div>
+                    <div>
+                        <h3>Query Results</h3>
+                        <div id="table-result" class="table"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Retention Strategy Section -->
+            <section class="card">
+                <h2>Retention Strategy Generator</h2>
+                <p class="muted">Generate personalized retention strategies for at-risk customers.</p>
+                <div class="grid-2">
+                    <div>
+                        <label class="label">Customer ID</label>
+                        <input type="text" id="retention-customer-id" class="input" placeholder="CUST001" />
+                    </div>
+                    <div>
+                        <label class="label">Churn Risk (%)</label>
+                        <input type="number" id="retention-churn-risk" class="input" placeholder="75" min="0" max="100" />
+                    </div>
+                </div>
+                <div class="row">
+                    <button id="btn-retention" class="btn primary">Generate Strategy</button>
+                </div>
+                <div id="retention-result" class="result"></div>
+            </section>
+
+            <!-- Customer Insights Section -->
+            <section class="card">
+                <h2>Customer Insights & Analytics</h2>
+                <p class="muted">Get comprehensive insights about specific customers.</p>
+                <div class="row">
+                    <input type="text" id="insights-customer-id" class="input" placeholder="Enter Customer ID..." />
+                    <button id="btn-insights" class="btn primary">Get Insights</button>
+                </div>
+                <div id="insights-result" class="result"></div>
+            </section>
+
+            <!-- Topic Analysis Section -->
+            <section class="card">
+                <h2>Topic Analysis</h2>
+                <p class="muted">Analyze customer interactions to identify common topics and themes.</p>
+                <textarea id="topic-texts" rows="4" class="input" placeholder="Enter multiple texts for topic analysis (one per line)...">I'm having billing issues with my account
+The network connection is very slow
+I want to upgrade my plan
+Customer service was helpful today</textarea>
+                <div class="row">
+                    <button id="btn-topic" class="btn primary">Analyze Topics</button>
+                </div>
+                <div id="topic-result" class="result"></div>
+            </section>
+
+            <!-- High-Risk Customers Section -->
+            <section class="card">
+                <h2>High-Risk Customer Ranking</h2>
+                <p class="muted">View customers ranked by churn risk for proactive intervention.</p>
+                <div class="row">
+                    <input type="number" id="risk-limit" class="input small" placeholder="50" min="10" max="200" value="50" />
+                    <button id="btn-risk-ranking" class="btn primary">Get Rankings</button>
+                </div>
+                <div id="risk-ranking-result" class="table"></div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 ChurnGuard Pro. Built with ❤️ by Arjun Yadav, Rohit Mukherjee & Lovneesh Aggarwal</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
