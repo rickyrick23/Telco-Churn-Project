@@ -2,9 +2,8 @@
 
 An enterprise-grade, decoupled platform built for predicting high-value customer churn and generating personalized, actionable retention strategies.
 
-Built with love by Arjun Yadav, Rohit Mukherjee & Lovneesh Aggarwal
+Built with love by  Rohit Mukherjee 
 
------
 
 ## Project Overview: From Prediction to Prescription
 
